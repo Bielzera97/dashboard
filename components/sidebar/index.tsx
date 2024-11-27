@@ -1,11 +1,28 @@
+"use client"
 import Link from "next/link"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Button } from "../ui/button"
 import { Home, LogOut, Package, PanelBottom, Settings, ShoppingBag, Users } from "lucide-react"
 import { TooltipProvider, TooltipTrigger, Tooltip, TooltipContent } from "../ui/tooltip"
+import { signOut } from "firebase/auth"
+import { auth } from "@/lib/firebase"
+
 
 
 export const Sidebar = () => {
+
+
+
+
+    const handleLogOut = async () => {
+        try { 
+            await signOut(auth)
+            alert('Deslogado!')
+        }catch(err){
+            console.log(err)
+        }
+    }
+
     return(
         <div className="flex w-full flex-col bg-muted/40">
 
@@ -77,10 +94,10 @@ export const Sidebar = () => {
                     <TooltipProvider>
                     <Tooltip>
                             <TooltipTrigger asChild>
-                                <Link href={"/"} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground">
+                                <Button onClick={handleLogOut} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground">
                                     <LogOut className="h-5 w-5"/>
                                     <span className="sr-only">Sair</span>
-                                </Link>
+                                </Button>
                             </TooltipTrigger>
                             <TooltipContent side="right">
                                 Sair
