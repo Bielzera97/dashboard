@@ -2,16 +2,37 @@
 import Link from "next/link"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Button } from "../ui/button"
-import { Home, LogOut, Package, PanelBottom, Settings, ShoppingBag, Users } from "lucide-react"
+import { Home, LogIn, LogOut, Package, PanelBottom, Settings, ShoppingBag, Users } from "lucide-react"
 import { TooltipProvider, TooltipTrigger, Tooltip, TooltipContent } from "../ui/tooltip"
-import { signOut } from "firebase/auth"
+import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/lib/firebase"
+import { useState, useEffect } from "react"
 
 
 
 export const Sidebar = () => {
 
 
+    const [userID, setUserId] = useState("")
+    const [displayName, setDisplayName] = useState("");
+
+   
+
+    console.log(displayName ? `Usuário ${displayName} logado! Seu ID é ${userID}` : "Nenhum usuário Logado" )
+
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          if (user) {
+            setUserId(user.uid || "id");
+            setDisplayName(user.displayName || "Usuário");
+          } else {
+            setDisplayName("");
+          }
+        });
+    
+        return () => unsubscribe();
+      }, []);
 
 
     const handleLogOut = async () => {
@@ -92,17 +113,31 @@ export const Sidebar = () => {
                 </nav>
                 <nav className="mt-auto flex flex-col  items-center gap-4 px-2 py-4">
                     <TooltipProvider>
-                    <Tooltip>
+                        {displayName ?  
+                        <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button onClick={handleLogOut} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground">
+                                <Link href={"/"} onClick={handleLogOut} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground">
                                     <LogOut className="h-5 w-5"/>
                                     <span className="sr-only">Sair</span>
-                                </Button>
+                                </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right">
                                 Sair
                             </TooltipContent>
-                        </Tooltip>
+                        </Tooltip> :
+                                                <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Link href={"/login"}  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground">
+                                                        <LogIn className="h-5 w-5"/>
+                                                        <span className="sr-only">Sair</span>
+                                                    </Link>
+                                                </TooltipTrigger>
+                                                <TooltipContent side="right">
+                                                    Login
+                                                </TooltipContent>
+                                        </Tooltip>
+
+                        }
                     </TooltipProvider>
                 </nav>
             </aside>
