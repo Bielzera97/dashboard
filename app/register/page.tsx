@@ -34,10 +34,10 @@ const Register = () => {
     return(
         <div className="flex items-center justify-center mt-24">
         <Card className="px-10">
-            <CardHeader>
+            <CardHeader className="flex items-center">
                 <CardTitle>Registro</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-5">
                 <Input type="text" placeholder="Usuário" value={username} onChange={(e) => setUser(e.target.value)}/>
                 <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>

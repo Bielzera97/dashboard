@@ -28,10 +28,10 @@ const Login = () => {
     return(
         <div className="flex items-center justify-center mt-24">
         <Card className="px-10">
-            <CardHeader>
+            <CardHeader className="flex items-center">
                 <CardTitle>Login</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex flex-col gap-5">
                 <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <Input type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 <Button onClick={handleSubmit}>Login</Button>
